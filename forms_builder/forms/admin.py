@@ -60,14 +60,15 @@ class FormAdmin(admin.ModelAdmin):
     fieldentry_model = FieldEntry
 
     inlines = (FieldAdmin,)
-    list_display = ("title", "status", "email_copies", "publish_date",
-                    "expiry_date", "total_entries", "admin_links")
+    list_display = ("internal_name", "title", "status", "email_copies",
+                    "publish_date", "expiry_date", "total_entries",
+                    "admin_links",)
     list_display_links = ("title",)
     list_editable = ("status", "email_copies", "publish_date", "expiry_date")
     list_filter = ("status",)
     filter_horizontal = form_admin_filter_horizontal
     search_fields = ("title", "intro", "response", "email_from",
-                     "email_copies")
+                     "email_copies", "internal_name",)
     radio_fields = {"status": admin.HORIZONTAL}
     fieldsets = form_admin_fieldsets
 

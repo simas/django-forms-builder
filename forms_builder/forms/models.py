@@ -55,6 +55,7 @@ class AbstractForm(models.Model):
 
     sites = models.ManyToManyField(Site,
         default=[settings.SITE_ID], related_name="%(app_label)s_%(class)s_forms")
+    internal_name = models.CharField(max_length=500, blank=True)
     title = models.CharField(_("Title"), max_length=50)
     slug = models.SlugField(_("Slug"), editable=settings.EDITABLE_SLUGS,
         max_length=100, unique=True)
@@ -93,7 +94,10 @@ class AbstractForm(models.Model):
         abstract = True
 
     def __str__(self):
-        return str(self.title)
+        if self.internal_name:
+            return '{} - {}'.format(self.internal_name, self.title)
+        else:
+            return self.title
 
     def save(self, *args, **kwargs):
         """
