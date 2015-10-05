@@ -206,7 +206,7 @@ class AbstractField(models.Model):
                 quoted = True
             elif quoted and char == settings.CHOICES_UNQUOTE:
                 quoted = False
-            elif char == "," and not quoted:
+            elif char == ";" and not quoted:
                 choice = choice.strip()
                 if choice:
                     yield choice, choice
