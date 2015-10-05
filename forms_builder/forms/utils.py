@@ -43,7 +43,11 @@ def split_choices(choices_string):
     """
     Convert a comma separated choices string to a list.
     """
-    return [x.strip() for x in choices_string.split(",") if x.strip()]
+    if ';' in choices_string:
+        delim = ';'
+    else:
+        delim = ','
+    return [x.strip() for x in choices_string.split(delim) if x.strip()]
 
 
 def html5_field(name, base):
