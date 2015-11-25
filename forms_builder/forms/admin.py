@@ -6,6 +6,7 @@ from mimetypes import guess_type
 from os.path import join
 from datetime import datetime
 from io import BytesIO, StringIO
+import tablib
 
 from django.conf.urls import patterns, url
 from django.contrib import admin
@@ -147,21 +148,19 @@ class FormAdmin(admin.ModelAdmin):
                 fname = "%s-%s.xls" % (form.slug, slugify(now().ctime()))
                 attachment = "attachment; filename=%s" % fname
                 response["Content-Disposition"] = attachment
-                queue = BytesIO()
-                workbook = xlwt.Workbook(encoding='utf8')
-                sheet = workbook.add_sheet(form.title[:31])
+                header = []
+                data = []
                 for c, col in enumerate(entries_form.columns()):
-                    sheet.write(0, c, col)
+                    header.append(col)
                 for r, row in enumerate(entries_form.rows(csv=True)):
+                    data_row = []
                     for c, item in enumerate(row):
                         if isinstance(item, datetime):
                             item = item.replace(tzinfo=None)
-                            sheet.write(r + 2, c, item, XLWT_DATETIME_STYLE)
-                        else:
-                            sheet.write(r + 2, c, item)
-                workbook.save(queue)
-                data = queue.getvalue()
-                response.write(data)
+                        data_row.append(item)
+                    data.append(data_row)
+                dataset = tablib.Dataset(*data, headers=header)
+                response.write(dataset.xlsx)
                 return response
             elif request.POST.get("delete") and can_delete_entries:
                 selected = request.POST.getlist("selected")
