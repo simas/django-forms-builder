@@ -88,6 +88,8 @@ class FormDetail(TemplateView):
             "request": request,
         }
         email_from = form.email_from or settings.DEFAULT_FROM_EMAIL
+        if email_from == 'webmaster@localhost':
+            email_from = settings.DEFAULT_FROM_EMAIL
         email_to = form_for_form.email_to()
         if email_to and form.send_email:
             send_mail_template(subject, "form_response", email_from,

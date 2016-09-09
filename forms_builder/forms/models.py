@@ -86,6 +86,8 @@ class AbstractForm(models.Model):
     email_subject = models.CharField(_("Subject"), max_length=200, blank=True)
     email_message = models.TextField(_("Message"), blank=True)
 
+    registration_limit = models.IntegerField(blank=True, null=True)
+
     objects = FormManager()
 
     class Meta:
@@ -132,6 +134,11 @@ class AbstractForm(models.Model):
         """
         return self.total_entries
     total_entries.admin_order_field = "total_entries"
+
+    def registration_limit_reached(self):
+        if self.registration_limit and self.registration_limit <= self.entries.count():
+            return True
+        return False
 
     @models.permalink
     def get_absolute_url(self):
