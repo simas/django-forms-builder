@@ -58,7 +58,7 @@ class AbstractForm(models.Model):
     internal_name = models.CharField(max_length=500, blank=True)
     title = models.CharField(_("Title"), max_length=50)
     slug = models.SlugField(_("Slug"), editable=settings.EDITABLE_SLUGS,
-        max_length=100, unique=True)
+        max_length=1000, unique=True)
     intro = models.TextField(_("Intro"), blank=True)
     button_text = models.CharField(_("Button text"), max_length=50,
         default=_("Submit"))
@@ -174,7 +174,7 @@ class AbstractField(models.Model):
     """
 
     label = models.CharField(_("Label"), max_length=settings.LABEL_MAX_LENGTH)
-    slug = models.SlugField(_('Slug'), max_length=100, blank=True,
+    slug = models.SlugField(_('Slug'), max_length=1000, blank=True,
             default="")
     field_type = models.IntegerField(_("Type"), choices=fields.NAMES)
     required = models.BooleanField(_("Required"), default=True)
@@ -187,7 +187,7 @@ class AbstractField(models.Model):
     default = models.CharField(_("Default value"), blank=True,
         max_length=settings.FIELD_MAX_LENGTH)
     placeholder_text = models.CharField(_("Placeholder Text"), null=True,
-        blank=True, max_length=100, editable=settings.USE_HTML5)
+        blank=True, max_length=1000, editable=settings.USE_HTML5)
     help_text = models.CharField(_("Help text"), blank=True, max_length=settings.HELPTEXT_MAX_LENGTH)
 
     objects = FieldManager()
